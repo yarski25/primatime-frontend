@@ -1,7 +1,11 @@
+import Input from "./components/input/Input";
+
 function App() {
   return (
     <>
-      <p>ComboBox</p>
+      {/* <p>ComboBox</p> */}
+      <Input />
+      {/* <ComboBox /> */}
     </>
   );
 }
