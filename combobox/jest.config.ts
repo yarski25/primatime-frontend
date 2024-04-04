@@ -10,9 +10,14 @@ export default {
   // moduleNameMapper: {
   //   "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__ mocks __/fileMock.js",
   // },
+  // moduleNameMapper: {
+  //   "\\.(css|scss)$": "<rootDir>/tests/mocks/styleMock.js",
+  //   "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4)$":
+  //     "<rootDir>/tests/mocks/fileMock.js",
+  // },
   moduleNameMapper: {
-    "\\.(css|scss)$": "<rootDir>/tests/mocks/styleMock.js",
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4)$":
-      "<rootDir>/tests/mocks/fileMock.js",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      "<rootDir>/config/__mocks__/fileMock.js",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
 };
