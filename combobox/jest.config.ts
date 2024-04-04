@@ -7,7 +7,12 @@ export default {
     "^.+\\.js?$": "babel-jest",
     "^.+\\.jsx?$": "babel-jest",
   },
+  // moduleNameMapper: {
+  //   "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__ mocks __/fileMock.js",
+  // },
   moduleNameMapper: {
-    "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__ mocks __/fileMock.js",
+    "\\.(css|scss)$": "<rootDir>/tests/mocks/styleMock.js",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4)$":
+      "<rootDir>/tests/mocks/fileMock.js",
   },
 };

@@ -1,0 +1,13 @@
+label {
+  font-size: 0.7em;
+  color: black;
+}
+
+.inputError {
+  border: 2px solid red;
+  &Msg {
+    margin-top: 0.5em;
+    font-size: 0.7em;
+    color: red;
+  }
+}
