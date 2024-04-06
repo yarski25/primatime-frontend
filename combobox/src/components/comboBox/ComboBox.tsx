@@ -13,6 +13,7 @@ import {
 
 import styles from "./ComboBox.module.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import UniService from "../../api/UniService";
 
 const OFFSET = 10;
 
@@ -46,16 +47,20 @@ const ComboBox = () => {
   ]);
 
   // // access to client
-  // const  queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // queries
   const { isLoading, error, data } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: () =>
-      fetch("https://api.github.com/repos/TanStack/query").then((res) =>
-        res.json()
-      ),
+    queryKey: ["unis"],
+    queryFn: () => UniService.getAllUnis,
   });
+  // const { isLoading, error, data } = useQuery({
+  //   queryKey: ["unis"],
+  //   queryFn: () =>
+  //     fetch("https://api.github.com/repos/TanStack/query").then((res) =>
+  //       res.json()
+  //     ),
+  // });
 
   // // mutations
   // const mutation = useMutation({
@@ -87,6 +92,9 @@ const ComboBox = () => {
             <ul>
               {/* {data.map((index: any, item: any) => (
                 <li key={index}>{item.name}</li>
+              ))} */}
+              {/* {data?.map((uni) => (
+                <li key={uni.id}>{uni.name}</li>
               ))} */}
               {data.name}
               {/* {Array.from({ length: 100 }).map((_, index) => (

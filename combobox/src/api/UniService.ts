@@ -10,7 +10,7 @@ queries["country"] = "Czech+Republic";
 queries["name"] = "";
 
 // function to create query for endpoint
-const createQuery = (queries: Dictionary, name: string) => {
+const createQuery = (queries: Dictionary, name?: string) => {
   if (name) queries["name"] = name;
   let query = "search?";
   for (const key in queries) {
@@ -26,7 +26,25 @@ export default class UniService {
     console.log(query);
     const response = await axios.get(baseURL + `/` + query);
 
-    return response;
+    return response.data;
+    //   const response = await axios.get(
+    //     // baseURL +
+    //     //   `search?` +
+    //     //   `country` +
+    //     //   `=` +
+    //     //   queries["country"] +
+    //     //   `&` +
+    //     //   `name` +
+    //     //   `=` +
+    //     //   queries["name"]
+    //   );
+  }
+  static async getAllUnis() {
+    const query = createQuery(queries);
+    console.log(query);
+    const response = await axios.get(baseURL + `/` + query);
+
+    return response.data;
     //   const response = await axios.get(
     //     // baseURL +
     //     //   `search?` +
