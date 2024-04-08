@@ -1,3 +1,4 @@
+import { Uni } from "../types/university";
 import axios, { baseURL } from "./axiosConfig";
 
 //const query = `search?country=Czech+Republic&name=`;
@@ -42,7 +43,7 @@ export default class UniService {
   static async getAllUnis() {
     const query = createQuery(queries);
     console.log(query);
-    const response = await axios.get(baseURL + `/` + query);
+    const response = await axios.get<Uni[]>(baseURL + `/` + query);
 
     return response.data;
     //   const response = await axios.get(

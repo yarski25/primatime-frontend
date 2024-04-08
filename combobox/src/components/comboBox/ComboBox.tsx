@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -14,11 +14,30 @@ import {
 import styles from "./ComboBox.module.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import UniService from "../../api/UniService";
+import { Uni } from "../../types/university";
 
 const OFFSET = 10;
 
 const ComboBox = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [unis, setUnis] = useState<Uni[]>([]);
+
+  // const fetchData = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await UniService.getAllUnis();
+  //     setUnis(response.data);
+  //   } catch (error) {
+  //     console.error((error as Error).message);
+  //   }
+  //   setIsLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const { refs, floatingStyles, context, strategy } = useFloating({
     placement: "bottom-start",
@@ -50,9 +69,11 @@ const ComboBox = () => {
   // const queryClient = useQueryClient();
 
   // queries
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data } = useQuery<Uni[], Error>({
     queryKey: ["unis"],
-    queryFn: () => UniService.getAllUnis,
+    queryFn: async () => {
+      return await UniService.getAllUnis();
+    },
   });
   // const { isLoading, error, data } = useQuery({
   //   queryKey: ["unis"],
@@ -93,10 +114,10 @@ const ComboBox = () => {
               {/* {data.map((index: any, item: any) => (
                 <li key={index}>{item.name}</li>
               ))} */}
-              {/* {data?.map((uni) => (
-                <li key={uni.id}>{uni.name}</li>
-              ))} */}
-              {data.name}
+              {data?.map((uni: Uni) => (
+                <li key={uni.name}>{uni.name}</li>
+              ))}
+              {/* {data.name} */}
               {/* {Array.from({ length: 100 }).map((_, index) => (
                 <li key={index}>{index}. list item</li>
               ))} */}
