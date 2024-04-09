@@ -1,35 +1,48 @@
+// variables
+$fontsize: 16px;
+$fontColor: rgba(0, 0, 0, 0.87);
+$fontColorDark: rgba(255, 255, 255, 0.87);
+$backgroundColor: lightgray;
+$backgroundColorDark: black;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: $fontsize;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: lightgray;
+  color: $fontColor;
+  background-color: $backgroundColor;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  // padding: 2rem;
+  // max-width: 1280px;
+  // display: flex;
+  // justify-content: center;
+  // //text-align: center;
 }
 
 body {
   margin: 0;
-  // display: flex;
-  // place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: $fontColor;
+    background-color: $backgroundColor;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: $fontColorDark;
+    background-color: $backgroundColorDark;
   }
 }

@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Form from "./components/form/Form";
 // import Input from "./components/input/Input";
+import "./App.scss";
 
 const queryClient = new QueryClient();
 
