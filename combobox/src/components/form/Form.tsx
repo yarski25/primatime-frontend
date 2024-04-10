@@ -1,6 +1,6 @@
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import Input from "../input/Input";
-import ComboBox from "../comboBox/ComboBox";
+import Input from "../ui/input/Input";
+import ComboBox from "../ui/comboBox/ComboBox";
 
 const Form = () => {
   const { control, handleSubmit } = useForm();

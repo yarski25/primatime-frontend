@@ -13,8 +13,8 @@ import {
 
 import styles from "./ComboBox.module.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import UniService from "../../api/UniService";
-import { Uni } from "../../types/university";
+import UniService from "../../../api/UniService";
+import { Uni } from "../../../types/university";
 import Input from "../input/Input";
 
 const OFFSET = 10;

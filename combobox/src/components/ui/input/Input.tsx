@@ -26,7 +26,7 @@ const Input = ({
   };
 
   return (
-    <div data-testid="input-box">
+    <div className={styles.inputBox} data-testid="input-box">
       <label
         data-testid="input-label"
         // className={`${styles.inputLabel} ${error && styles.inputLabelError}`}

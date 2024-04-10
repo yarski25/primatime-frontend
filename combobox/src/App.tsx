@@ -1,17 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Form from "./components/form/Form";
-// import Input from "./components/input/Input";
-import "./App.scss";
+import Main from "./components/main/Main";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <p>ComboBox</p> */}
-      {/* <Input /> */}
-      {/* <ComboBox /> */}
-      <Form />
+      <Main />
     </QueryClientProvider>
   );
 }

@@ -1,6 +1,15 @@
+.inputBox {
+  display: block;
+  width: 200px;
+}
+
 label {
   font-size: 0.7em;
   color: black;
+}
+
+input {
+  padding: 2px;
 }
 
 .inputError {
