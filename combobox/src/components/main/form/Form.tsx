@@ -1,6 +1,7 @@
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import Input from "../ui/input/Input";
-import ComboBox from "../ui/comboBox/ComboBox";
+import Input from "../../ui/input/Input";
+import ComboBox from "../../ui/comboBox/ComboBox";
+import styles from "./Form.module.scss";
 
 const Form = () => {
   const { control, handleSubmit } = useForm();
@@ -9,7 +10,7 @@ const Form = () => {
     console.log(data);
   };
   return (
-    <>
+    <div className={styles.form}>
       {/* <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="Input"
@@ -20,7 +21,7 @@ const Form = () => {
         <button type="submit">Odeslat</button>
       </form> */}
       <ComboBox />
-    </>
+    </div>
   );
 };
 

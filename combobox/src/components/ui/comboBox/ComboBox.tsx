@@ -99,10 +99,10 @@ const ComboBox = () => {
 
   return (
     <>
-      <button {...getReferenceProps({ ref: refs.setReference })}>
+      {/* <button {...getReferenceProps({ ref: refs.setReference })}>
         open dropdown
-      </button>
-      <Input />
+      </button> */}
+      <Input {...getReferenceProps({ ref: refs.setReference })} />
       {isOpen && (
         <FloatingPortal>
           <div

@@ -32,10 +32,11 @@ body {
 }
 
 main {
+  display: flex;
+  justify-content: center;
   max-width: map.get($breakpoints, "xl");
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
