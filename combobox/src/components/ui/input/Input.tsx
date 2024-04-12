@@ -1,11 +1,21 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./Input.module.scss";
+import { ReferenceType } from "@floating-ui/react";
+
+type floatingProps = {
+  getReferenceProps(
+    userProps?: React.HTMLProps<Element>
+  ): Record<string, unknown>;
+  setReference: ((node: ReferenceType | null) => void) &
+    ((node: ReferenceType | null) => void);
+};
 
 type Input = {
   label?: string;
   text?: string;
   disabled?: boolean;
   errorMsg?: string;
+  floatingProps?: floatingProps;
 };
 
 const Input = ({
@@ -13,6 +23,7 @@ const Input = ({
   text = "Uživatelský vstup",
   errorMsg = "Prázdný vstup",
   disabled,
+  floatingProps,
 }: Input) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
@@ -25,8 +36,28 @@ const Input = ({
     console.log(input);
   };
 
+  // const { context } = useFloating();
+
+  // const click = useClick(floatingProps);
+  // // const dismiss = useDismiss(context);
+  // // // const hover = useHover(context);
+  // // // const focus = useFocus(context);
+
+  // const { getReferenceProps, getFloatingProps } = useInteractions([
+  //   click,
+  //   // dismiss,
+  //   // hover,
+  //   // focus,
+  // ]);
+
   return (
     <div className={styles.inputBox} data-testid="input-box">
+      {/* <button
+        ref={floatingProps?.setReference}
+        {...floatingProps?.getReferenceProps()}
+      >
+        open dropdown
+      </button> */}
       <label
         data-testid="input-label"
         // className={`${styles.inputLabel} ${error && styles.inputLabelError}`}
@@ -43,6 +74,8 @@ const Input = ({
         onChange={handleInput}
         disabled={disabled ? disabled : false}
         placeholder={text ? text : "Text input"}
+        ref={floatingProps?.setReference}
+        {...floatingProps?.getReferenceProps()}
       />
       {error && (
         <div className={styles.inputErrorMsg}>

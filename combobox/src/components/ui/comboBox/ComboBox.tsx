@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -9,6 +9,9 @@ import {
   size,
   useInteractions,
   FloatingPortal,
+  useHover,
+  useFocus,
+  ReferenceType,
 } from "@floating-ui/react";
 
 import styles from "./ComboBox.module.scss";
@@ -60,10 +63,14 @@ const ComboBox = () => {
 
   const click = useClick(context);
   const dismiss = useDismiss(context);
+  // const hover = useHover(context);
+  // const focus = useFocus(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
     dismiss,
+    // hover,
+    // focus,
   ]);
 
   // // access to client
@@ -102,7 +109,13 @@ const ComboBox = () => {
       {/* <button {...getReferenceProps({ ref: refs.setReference })}>
         open dropdown
       </button> */}
-      <Input {...getReferenceProps({ ref: refs.setReference })} />
+      <Input
+        floatingProps={{
+          getReferenceProps: getReferenceProps,
+          setReference: refs.setReference,
+        }}
+      />
+
       {isOpen && (
         <FloatingPortal>
           <div
