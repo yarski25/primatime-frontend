@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -24,6 +24,7 @@ const OFFSET = 10;
 
 const ComboBox = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState("");
 
   // const [isLoading, setIsLoading] = useState(true);
   // const [unis, setUnis] = useState<Uni[]>([]);
@@ -78,9 +79,9 @@ const ComboBox = () => {
 
   // queries
   const { isLoading, error, data } = useQuery<Uni[], Error>({
-    queryKey: ["unis"],
+    queryKey: ["unis", input],
     queryFn: async () => {
-      return await UniService.getAllUnis();
+      return await UniService.getUnisByName(input);
     },
   });
   // const { isLoading, error, data } = useQuery({
@@ -110,6 +111,8 @@ const ComboBox = () => {
         open dropdown
       </button> */}
       <Input
+        input={input}
+        setInput={setInput}
         floatingProps={{
           getReferenceProps: getReferenceProps,
           setReference: refs.setReference,

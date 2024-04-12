@@ -25,7 +25,7 @@ export default class UniService {
   static async getUnisByName(name: string) {
     const query = createQuery(queries, name);
     console.log(query);
-    const response = await axios.get(baseURL + `/` + query);
+    const response = await axios.get<Uni[]>(baseURL + `/` + query);
 
     return response.data;
     //   const response = await axios.get(

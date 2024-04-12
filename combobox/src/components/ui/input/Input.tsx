@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 
@@ -13,6 +13,9 @@ type floatingProps = {
 type Input = {
   label?: string;
   text?: string;
+  input?: string;
+  setInput?: (input: string) => void;
+  handleInput?: (e: ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   errorMsg?: string;
   floatingProps?: floatingProps;
@@ -21,49 +24,29 @@ type Input = {
 const Input = ({
   label = "Label inputu",
   text = "Uživatelský vstup",
+  input,
+  setInput,
   errorMsg = "Prázdný vstup",
   disabled,
   floatingProps,
 }: Input) => {
-  const [input, setInput] = useState("");
   const [error, setError] = useState(false);
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
+    setInput?.(event.target.value);
     if (event.target.value.length === 0) {
       setError(true);
     } else setError(false);
     console.log(input);
   };
-
-  // const { context } = useFloating();
-
-  // const click = useClick(floatingProps);
-  // // const dismiss = useDismiss(context);
-  // // // const hover = useHover(context);
-  // // // const focus = useFocus(context);
-
-  // const { getReferenceProps, getFloatingProps } = useInteractions([
-  //   click,
-  //   // dismiss,
-  //   // hover,
-  //   // focus,
-  // ]);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {}, 2000);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <div className={styles.inputBox} data-testid="input-box">
-      {/* <button
-        ref={floatingProps?.setReference}
-        {...floatingProps?.getReferenceProps()}
-      >
-        open dropdown
-      </button> */}
-      <label
-        data-testid="input-label"
-        // className={`${styles.inputLabel} ${error && styles.inputLabelError}`}
-      >
-        {label ? label : "Label name"}
-      </label>
+      <label data-testid="input-label">{label ? label : "Label name"}</label>
       <br />
       <input
         data-testid="input-text"
