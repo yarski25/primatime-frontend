@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -9,45 +9,36 @@ import {
   size,
   useInteractions,
   FloatingPortal,
-  useHover,
-  useFocus,
   ReferenceType,
 } from "@floating-ui/react";
 
 import styles from "./ComboBox.module.scss";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import UniService from "../../../api/UniService";
 import { Uni } from "../../../types/university";
 import Input from "../input/Input";
+import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
 
 const OFFSET = 10;
 
 const ComboBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const debouncedSearchQuery = useDebouncedValue(input, 2000);
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [unis, setUnis] = useState<Uni[]>([]);
-
-  // const fetchData = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await UniService.getAllUnis();
-  //     setUnis(response.data);
-  //   } catch (error) {
-  //     console.error((error as Error).message);
-  //   }
-  //   setIsLoading(false);
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    console.log(input);
+  }, [debouncedSearchQuery]);
 
   const { refs, floatingStyles, context, strategy } = useFloating({
     placement: "bottom-start",
     open: isOpen,
-    onOpenChange: setIsOpen,
+    onOpenChange(isOpen, event, reason) {
+      setIsOpen(isOpen);
+      event && console.log(event); // e.g. MouseEvent
+      reason && console.log(reason); // e.g. 'hover'
+    },
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(OFFSET),
@@ -79,10 +70,11 @@ const ComboBox = () => {
 
   // queries
   const { isLoading, error, data } = useQuery<Uni[], Error>({
-    queryKey: ["unis", input],
+    queryKey: ["unis", debouncedSearchQuery],
     queryFn: async () => {
-      return await UniService.getUnisByName(input);
+      return await UniService.getUnisByName(debouncedSearchQuery);
     },
+    enabled: !!debouncedSearchQuery,
   });
   // const { isLoading, error, data } = useQuery({
   //   queryKey: ["unis"],
@@ -101,15 +93,12 @@ const ComboBox = () => {
   //   }
   // })
 
-  if (isLoading) return "Loading...";
+  // if (isLoading) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;
 
   return (
     <>
-      {/* <button {...getReferenceProps({ ref: refs.setReference })}>
-        open dropdown
-      </button> */}
       <Input
         input={input}
         setInput={setInput}
@@ -119,28 +108,33 @@ const ComboBox = () => {
         }}
       />
 
+      {/* {isLoading && <div>Loading...</div>} */}
       {isOpen && (
         <FloatingPortal>
-          <div
-            className={styles.dropdownContainer}
-            {...getFloatingProps({
-              ref: refs.setFloating,
-              style: { ...floatingStyles, position: strategy },
-            })}
-          >
-            <ul>
-              {/* {data.map((index: any, item: any) => (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div
+              className={styles.dropdownContainer}
+              {...getFloatingProps({
+                ref: refs.setFloating,
+                style: { ...floatingStyles, position: strategy },
+              })}
+            >
+              <ul>
+                {/* {data.map((index: any, item: any) => (
                 <li key={index}>{item.name}</li>
               ))} */}
-              {data?.map((uni: Uni) => (
-                <li key={uni.name}>{uni.name}</li>
-              ))}
-              {/* {data.name} */}
-              {/* {Array.from({ length: 100 }).map((_, index) => (
+                {data?.map((uni: Uni, index: number) => (
+                  <li key={index}>{uni.name}</li>
+                ))}
+                {/* {data.name} */}
+                {/* {Array.from({ length: 100 }).map((_, index) => (
                 <li key={index}>{index}. list item</li>
               ))} */}
-            </ul>
-          </div>
+              </ul>
+            </div>
+          )}
         </FloatingPortal>
       )}
     </>

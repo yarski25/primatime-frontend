@@ -24,7 +24,7 @@ const createQuery = (queries: Dictionary, name?: string) => {
 export default class UniService {
   static async getUnisByName(name: string) {
     const query = createQuery(queries, name);
-    console.log(query);
+    // console.log(query);
     const response = await axios.get<Uni[]>(baseURL + `/` + query);
 
     return response.data;
@@ -42,7 +42,7 @@ export default class UniService {
   }
   static async getAllUnis() {
     const query = createQuery(queries);
-    console.log(query);
+    // console.log(query);
     const response = await axios.get<Uni[]>(baseURL + `/` + query);
 
     return response.data;

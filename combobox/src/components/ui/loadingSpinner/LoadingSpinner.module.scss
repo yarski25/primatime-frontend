@@ -1,0 +1,22 @@
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spinnerBox {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 5px solid black;
+  border-top: 5px solid lightgray;
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
