@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "../../../types/university";
+import ClearButton from "../../../assets/icons/clearButton.svg?react";
 
 type floatingProps = {
   getReferenceProps(
@@ -66,6 +67,7 @@ const Input = ({
     <div className={styles.inputContainer} data-testid="input-container">
       <label data-testid="input-label">{label ? label : "Label name"}</label>
       <br />
+      <ClearButton />
       <div className={styles.inputWrapper} data-testid="input-wrapper">
         <input
           data-testid="input-text"
