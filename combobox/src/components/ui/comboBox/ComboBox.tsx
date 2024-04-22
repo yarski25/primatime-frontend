@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -10,6 +10,9 @@ import {
   useInteractions,
   FloatingPortal,
   ReferenceType,
+  useListNavigation,
+  useRole,
+  FloatingFocusManager,
 } from "@floating-ui/react";
 
 import styles from "./ComboBox.module.scss";
@@ -25,13 +28,16 @@ const OFFSET = 10;
 const ComboBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
   const debouncedSearchQuery = useDebouncedValue(input, 2000);
 
-  useEffect(() => {
-    console.log(input);
-  }, [debouncedSearchQuery]);
+  // useEffect(() => {
+  //   console.log(input);
+  // }, [debouncedSearchQuery]);
 
-  const { refs, floatingStyles, context, strategy } = useFloating({
+  const { refs, floatingStyles, context, strategy } = useFloating<HTMLElement>({
     placement: "bottom-start",
     open: isOpen,
     onOpenChange(isOpen, event, reason) {
@@ -53,17 +59,41 @@ const ComboBox = () => {
     ],
   });
 
+  const listRef = useRef<Array<HTMLElement | null>>([]);
+  // const listContentRef = useRef(data);
+
+  const listNavigation = useListNavigation(context, {
+    listRef,
+    activeIndex,
+    selectedIndex,
+    onNavigate: setActiveIndex,
+    loop: true, // in case of large list
+  });
+
   const click = useClick(context);
   const dismiss = useDismiss(context);
+  const role = useRole(context, { role: "listbox" });
   // const hover = useHover(context);
   // const focus = useFocus(context);
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    // hover,
-    // focus,
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      click,
+      dismiss,
+      listNavigation,
+      role,
+      // hover,
+      // focus,
+    ]
+  );
+
+  const handleSelect = (index: number) => {
+    setSelectedIndex(index);
+    if (selectedIndex) {
+      const selectedInput = data?.[selectedIndex].name as string;
+      setInput(selectedInput);
+    }
+  };
 
   // // access to client
   // const queryClient = useQueryClient();
@@ -74,8 +104,12 @@ const ComboBox = () => {
     queryFn: async () => {
       return await UniService.getUnisByName(debouncedSearchQuery);
     },
-    enabled: !!debouncedSearchQuery,
+    enabled: isOpen,
   });
+
+  const selectedItemLabel =
+    selectedIndex !== null ? data?.[selectedIndex] : undefined;
+
   // const { isLoading, error, data } = useQuery({
   //   queryKey: ["unis"],
   //   queryFn: () =>
@@ -105,6 +139,7 @@ const ComboBox = () => {
         floatingProps={{
           getReferenceProps: getReferenceProps,
           setReference: refs.setReference,
+          selectedItem: selectedItemLabel,
         }}
       />
 
@@ -122,16 +157,31 @@ const ComboBox = () => {
               })}
             >
               <ul>
-                {/* {data.map((index: any, item: any) => (
-                <li key={index}>{item.name}</li>
-              ))} */}
                 {data?.map((uni: Uni, index: number) => (
-                  <li key={index}>{uni.name}</li>
+                  <li
+                    key={index}
+                    tabIndex={index === activeIndex ? 0 : -1}
+                    aria-selected={
+                      index === selectedIndex && index === activeIndex
+                    }
+                    ref={(node) => {
+                      listRef.current[index] = node;
+                    }}
+                    style={{
+                      cursor: "default",
+                      background: index === activeIndex ? "orange" : "",
+                    }}
+                    role="option"
+                    {...getItemProps({
+                      // handle pointer selector
+                      onClick() {
+                        handleSelect(index);
+                      },
+                    })}
+                  >
+                    {uni.name}
+                  </li>
                 ))}
-                {/* {data.name} */}
-                {/* {Array.from({ length: 100 }).map((_, index) => (
-                <li key={index}>{index}. list item</li>
-              ))} */}
               </ul>
             </div>
           )}
