@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
-import { Uni } from "../../../types/university";
-import ClearButton from "../../../assets/icons/clearButton.svg?react";
+import { Uni } from "types/university";
+// import ClearButton from "assets/icons/clearButton.svg?react";
+import SvgIcon from "components/ui/svg/SvgIcon";
 
 type floatingProps = {
   getReferenceProps(
@@ -67,7 +68,9 @@ const Input = ({
     <div className={styles.inputContainer} data-testid="input-container">
       <label data-testid="input-label">{label ? label : "Label name"}</label>
       <br />
-      <ClearButton />
+      {/* <ClearButton /> */}
+
+      {/* <SvgIcon iconName="clearButton" /> */}
       <div className={styles.inputWrapper} data-testid="input-wrapper">
         <input
           data-testid="input-text"
@@ -82,7 +85,7 @@ const Input = ({
           ref={floatingProps?.setReference}
           {...floatingProps?.getReferenceProps()}
         />
-        <button
+        {/* <button
           data-testid="input-clearBtn"
           onClick={handleReset}
           // className={styles.inputClearBtn}
@@ -91,7 +94,11 @@ const Input = ({
           // type="reset"
         >
           x
-        </button>
+        </button> */}
+        <SvgIcon
+          iconName="clearButton"
+          svgProp={{ width: 16, height: 16, color: "white" }}
+        />
       </div>
       {error && (
         <div className={styles.inputErrorMsg}>
