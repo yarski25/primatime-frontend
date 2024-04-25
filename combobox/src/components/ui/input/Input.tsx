@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "types/university";
@@ -36,6 +36,8 @@ const Input = ({
 }: Input) => {
   const [error, setError] = useState(false);
 
+  // const inputRef = useRef(HTMLInputElement);
+
   // const inputText = document.querySelectorAll<HTMLInputElement>(".inputText");
   // const clearButton = document.querySelector(".inputClear-button");
 
@@ -58,8 +60,9 @@ const Input = ({
     } else setError(false);
   };
 
-  const handleReset = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleReset = (event: MouseEvent<HTMLDivElement>) => {
     setInput("");
+    // inputRef?.current.focus();
     // inputText?.focus();
     // inputText?.classList.remove("inputText--touched");
   };
@@ -69,14 +72,13 @@ const Input = ({
       <label data-testid="input-label">{label ? label : "Label name"}</label>
       <br />
       {/* <ClearButton /> */}
-
-      {/* <SvgIcon iconName="clearButton" /> */}
       <div className={styles.inputWrapper} data-testid="input-wrapper">
         <input
           data-testid="input-text"
           required
           className={`${error && styles.inputError}`}
           type="text"
+          autoComplete="off"
           name="input"
           value={input}
           onChange={handleInput}
@@ -96,8 +98,15 @@ const Input = ({
           x
         </button> */}
         <SvgIcon
+          wrapperStyle={styles.clearBtn}
           iconName="clearButton"
-          svgProp={{ width: 16, height: 16, color: "white" }}
+          svgProp={{
+            width: 16,
+            height: 16,
+            fill: "black",
+            stroke: "white",
+          }}
+          onClick={handleReset}
         />
       </div>
       {error && (

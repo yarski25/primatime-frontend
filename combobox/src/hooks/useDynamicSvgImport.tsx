@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 const useDynamicSvgImport = (
   iconName: string
   //   iconPath: string = `../assets/icons`
-  //   iconPath: string = `assets/icons`
 ) => {
   const importedIconRef = useRef<React.FC<React.SVGProps<SVGElement>>>();
   const [loading, setLoading] = useState(false);
@@ -16,7 +15,6 @@ const useDynamicSvgImport = (
         importedIconRef.current = (
           await import(`../assets/icons/${iconName}.svg?react`)
         ).default;
-        // console.log(`${iconPath}/${iconName}.svg`);
       } catch (error) {
         setError(error);
         console.error(error);

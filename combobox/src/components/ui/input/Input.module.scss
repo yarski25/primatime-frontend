@@ -3,6 +3,50 @@
   // max-width: 100%;
 }
 
+.clearBtn {
+  // position
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  // appearance
+  justify-content: center;
+  align-items: center;
+  // width: 16px;
+  // height: 16px;
+  appearance: none;
+  border: none;
+  border-radius: 50%;
+  // background: gray;
+  // color: white;
+  // font-size: 16px;
+  // font-family: sans-serif;
+  cursor: pointer;
+  // display: none;
+  display: inline-flex;
+
+  svg {
+    &:hover {
+      fill: lightgrey;
+    }
+
+    // path {
+    //   &:hover {
+    //     stroke-width: 10;
+    //   }
+    // }
+  }
+
+  // &:hover {
+  //   background-color: darkgray;
+  // }
+}
+
+// .clearBtnSvg {
+//   &:hover {
+//     fill: orange;
+//   }
+// }
+
 .inputWrapper {
   display: inline-block;
   position: relative;
@@ -12,39 +56,39 @@
     width: 100%;
   }
 
-  button {
-    // position
-    position: absolute;
-    right: 2px;
-    top: 2px;
-    // appearance
-    justify-content: center;
-    align-items: center;
-    width: 16px;
-    height: 16px;
-    appearance: none;
-    border: none;
-    border-radius: 50%;
-    background: gray;
-    // margin: 0;
-    // padding: 0;
-    color: white;
-    font-size: 16px;
-    font-family: sans-serif;
-    // overflow: visible;
-    // line-height: 1.15;
-    // font-weight: bold;
-    // text-align: center;
-    // vertical-align: auto;
-    // display: flex;
-    cursor: pointer;
-    // display: none;
-    display: inline-flex;
+  // button {
+  //   // position
+  //   position: absolute;
+  //   right: 2px;
+  //   top: 2px;
+  //   // appearance
+  //   justify-content: center;
+  //   align-items: center;
+  //   width: 16px;
+  //   height: 16px;
+  //   appearance: none;
+  //   border: none;
+  //   border-radius: 50%;
+  //   background: gray;
+  //   // margin: 0;
+  //   // padding: 0;
+  //   color: white;
+  //   font-size: 16px;
+  //   font-family: sans-serif;
+  //   // overflow: visible;
+  //   // line-height: 1.15;
+  //   // font-weight: bold;
+  //   // text-align: center;
+  //   // vertical-align: auto;
+  //   // display: flex;
+  //   cursor: pointer;
+  //   // display: none;
+  //   display: inline-flex;
 
-    &:hover {
-      background-color: darkgray;
-    }
-  }
+  //   &:hover {
+  //     background-color: darkgray;
+  //   }
+  // }
 }
 
 // .inputClearBtn {

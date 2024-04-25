@@ -17,11 +17,11 @@ import {
 
 import styles from "./ComboBox.module.scss";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import UniService from "../../../api/UniService";
-import { Uni } from "../../../types/university";
-import Input from "../input/Input";
-import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
-import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
+import UniService from "@/api/UniService";
+import { Uni } from "types/university";
+import Input from "components/ui/input/Input";
+import LoadingSpinner from "components/ui/loadingSpinner/LoadingSpinner";
+import { useDebouncedValue } from "hooks/useDebouncedValue";
 
 const OFFSET = 10;
 

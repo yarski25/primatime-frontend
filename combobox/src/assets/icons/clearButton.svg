@@ -2,10 +2,11 @@
     width="40"
     height="40"
     viewbox="0 0 40 40"
-    fill="none">
-    <circle cx="20" cy="20" r="18" stroke="black" fill="currentColor" stroke-width="4"/>
+    fill="current">
+    <circle class="circle" cx="20" cy="20" r="18" stroke="current" fill="current" stroke-width="4"/>
 
-    <path d="M 10,10 L 30,30 M 30,10 L 10,30"
-          stroke="black" 
+    <path class="x"
+          d="M 15,15 L 25,25 M 25,15 L 15,25"
+          stroke="current" 
           stroke-width="4" />
 </svg>
