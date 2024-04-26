@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -9,14 +9,12 @@ import {
   size,
   useInteractions,
   FloatingPortal,
-  ReferenceType,
   useListNavigation,
   useRole,
-  FloatingFocusManager,
 } from "@floating-ui/react";
 
 import styles from "./ComboBox.module.scss";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import UniService from "@/api/UniService";
 import { Uni } from "types/university";
 import Input from "components/ui/input/Input";

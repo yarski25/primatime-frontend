@@ -4,7 +4,7 @@ type Props = {
   iconName: string;
   wrapperStyle?: string;
   svgProp?: React.SVGProps<SVGSVGElement>;
-  onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+  onClick?: (event: React.MouseEvent) => void;
 };
 
 const SvgIcon = (props: Props) => {

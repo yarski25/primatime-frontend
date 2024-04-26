@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "types/university";
@@ -60,8 +60,11 @@ const Input = ({
     } else setError(false);
   };
 
-  const handleReset = (event: MouseEvent<HTMLDivElement>) => {
-    setInput("");
+  const handleReset = (e: React.MouseEvent) => {
+    if (e.currentTarget) setInput("");
+    console.log("reset click!");
+    console.log(e.target);
+    console.log(e.currentTarget);
     // inputRef?.current.focus();
     // inputText?.focus();
     // inputText?.classList.remove("inputText--touched");

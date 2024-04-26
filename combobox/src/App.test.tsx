@@ -7,8 +7,8 @@ it("Renders the main page", () => {
   expect(true).toBeTruthy();
 });
 
-it("Main page contains input", () => {
+it("Main page contains input container", () => {
   render(<App />);
-  const inputEl = screen.getByTestId("input-box");
+  const inputEl = screen.getByTestId("input-container");
   expect(inputEl).toBeInTheDocument();
 });
