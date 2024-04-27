@@ -1,14 +1,18 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 
-it("Renders the main page", () => {
+it("Renders the main page", async () => {
   render(<App />);
-  expect(true).toBeTruthy();
+  await waitFor(() => {
+    expect(true).toBeTruthy();
+  });
 });
 
-it("Main page contains input container", () => {
+it("Main page contains input container", async () => {
   render(<App />);
   const inputEl = screen.getByTestId("input-container");
-  expect(inputEl).toBeInTheDocument();
+  await waitFor(() => {
+    expect(inputEl).toBeInTheDocument();
+  });
 });
