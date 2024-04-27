@@ -17,7 +17,11 @@ const SvgIcon = (props: Props) => {
         <div className="rounded-full bg-slate-400 animate-pulse h-8 w-8"></div>
       )}
       {SvgIcon && (
-        <div className={wrapperStyle} onClick={props.onClick}>
+        <div
+          className={wrapperStyle}
+          data-testid="input-clear"
+          onClick={props.onClick}
+        >
           <SvgIcon {...svgProp} />
         </div>
       )}
