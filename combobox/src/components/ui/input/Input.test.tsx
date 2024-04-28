@@ -38,9 +38,12 @@ it("Input component contains input text", async () => {
 // it("Input component contains clear button", async () => {
 //   render(<Input input="" setInput={() => {}} />);
 //   const clearEl = screen.getByTestId("input-clear");
-//   await waitFor(() => {
-//     expect(clearEl).toBeInTheDocument();
-//   });
+//   await waitFor(
+//     () => {
+//       expect(clearEl).toBeInTheDocument();
+//     },
+//     { timeout: 3000 }
+//   );
 // });
 
 it("Input component contains label and placeholder default text", async () => {
