@@ -43,17 +43,16 @@ const Input = ({
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
-    console.log(event.currentTarget.classList);
-    if (
-      event.target.value &&
-      !event.currentTarget.classList.contains("inputText--touched")
-    ) {
-      event.currentTarget.classList.add("inputText--touched");
-    } else if (
-      !event.target.value &&
-      event.currentTarget.classList.contains("inputText--touched")
-    )
-      event.currentTarget.classList.remove("inputText--touched");
+    // if (
+    //   event.target.value &&
+    //   !event.currentTarget.classList.contains("inputText--touched")
+    // ) {
+    //   event.currentTarget.classList.add("inputText--touched");
+    // } else if (
+    //   !event.target.value &&
+    //   event.currentTarget.classList.contains("inputText--touched")
+    // )
+    //   event.currentTarget.classList.remove("inputText--touched");
 
     if (event.target.value.length === 0) {
       setError(true);
