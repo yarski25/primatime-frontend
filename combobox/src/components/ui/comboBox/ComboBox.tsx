@@ -93,6 +93,30 @@ const ComboBox = () => {
     }
   };
 
+  const handleInput = (inputValue: string) => {
+    setInput(inputValue);
+    // if (
+    //   event.target.value &&
+    //   !event.currentTarget.classList.contains("inputText--touched")
+    // ) {
+    //   event.currentTarget.classList.add("inputText--touched");
+    // } else if (
+    //   !event.target.value &&
+    //   event.currentTarget.classList.contains("inputText--touched")
+    // )
+    //   event.currentTarget.classList.remove("inputText--touched");
+  };
+
+  // const handleReset = (e: React.MouseEvent) => {
+  //   if (e.currentTarget) setInput("");
+  //   console.log("reset click!");
+  //   console.log(e.target);
+  //   console.log(e.currentTarget);
+  //   // inputRef?.current.focus();
+  //   // inputText?.focus();
+  //   // inputText?.classList.remove("inputText--touched");
+  // };
+
   // // access to client
   // const queryClient = useQueryClient();
 
@@ -133,7 +157,7 @@ const ComboBox = () => {
     <>
       <Input
         input={input}
-        setInput={setInput}
+        onChangeInput={handleInput}
         floatingProps={{
           getReferenceProps: getReferenceProps,
           setReference: refs.setReference,

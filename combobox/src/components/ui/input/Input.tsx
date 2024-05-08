@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "types/university";
-// import ClearButton from "assets/icons/clearButton.svg?react";
 import SvgIcon from "components/ui/svg/SvgIcon";
 
 type floatingProps = {
@@ -14,12 +13,11 @@ type floatingProps = {
   selectedItem: Uni | undefined;
 };
 
-type Input = {
+type InputProps = {
   label?: string;
   text?: string;
   input: string;
-  setInput: (input: string) => void;
-  handleInput?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeInput: (inputValue: string) => void;
   disabled?: boolean;
   errorMsg?: string;
   floatingProps?: floatingProps;
@@ -29,51 +27,31 @@ const Input = ({
   label = "Label inputu",
   text = "Uživatelský vstup",
   input,
-  setInput,
+  onChangeInput,
   errorMsg = "Prázdný vstup",
   disabled,
   floatingProps,
-}: Input) => {
+}: InputProps) => {
   const [error, setError] = useState(false);
-
-  // const inputRef = useRef(HTMLInputElement);
-
-  // const inputText = document.querySelectorAll<HTMLInputElement>(".inputText");
-  // const clearButton = document.querySelector(".inputClear-button");
+  const [userInput, setUserInput] = useState<string>(input);
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-    // if (
-    //   event.target.value &&
-    //   !event.currentTarget.classList.contains("inputText--touched")
-    // ) {
-    //   event.currentTarget.classList.add("inputText--touched");
-    // } else if (
-    //   !event.target.value &&
-    //   event.currentTarget.classList.contains("inputText--touched")
-    // )
-    //   event.currentTarget.classList.remove("inputText--touched");
-
+    onChangeInput(event.target.value);
+    setUserInput(event.target.value);
     if (event.target.value.length === 0) {
       setError(true);
     } else setError(false);
   };
 
   const handleReset = (e: React.MouseEvent) => {
-    if (e.currentTarget) setInput("");
-    console.log("reset click!");
-    console.log(e.target);
-    console.log(e.currentTarget);
-    // inputRef?.current.focus();
-    // inputText?.focus();
-    // inputText?.classList.remove("inputText--touched");
+    onChangeInput("");
+    setUserInput("");
   };
 
   return (
     <div className={styles.inputContainer} data-testid="input-container">
       <label data-testid="input-label">{label ? label : "Label name"}</label>
       <br />
-      {/* <ClearButton /> */}
       <div className={styles.inputWrapper} data-testid="input-wrapper">
         <input
           data-testid="input-text"
@@ -82,23 +60,13 @@ const Input = ({
           type="text"
           autoComplete="off"
           name="input"
-          value={input}
-          onChange={handleInput}
+          value={userInput}
+          onChange={(event) => handleInput(event)}
           disabled={disabled ? disabled : false}
           placeholder={text ? text : "Text input"}
           ref={floatingProps?.setReference}
           {...floatingProps?.getReferenceProps()}
         />
-        {/* <button
-          data-testid="input-clearBtn"
-          onClick={handleReset}
-          // className={styles.inputClearBtn}
-          aria-label="Clear input"
-          title="Clear input"
-          // type="reset"
-        >
-          x
-        </button> */}
         <SvgIcon
           wrapperStyle={styles.clearBtn}
           iconName="clearButton"

@@ -9,7 +9,7 @@ describe("Loading spinner component", () => {
 
   it("contains spinner box and spinner", () => {
     render(<LoadingSpinner />);
-    screen.debug();
+    // screen.debug();
     const spinnerBoxEl = screen.getByTestId("spinner-box");
     const spinnerEl = screen.getByTestId("spinner");
     expect(spinnerBoxEl).toBeTruthy();

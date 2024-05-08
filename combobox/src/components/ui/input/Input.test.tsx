@@ -1,17 +1,51 @@
 import "@testing-library/jest-dom";
+// import userEvent from "@testing-library/user-event";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Input from "./Input";
+// import { ChangeEvent, useState } from "react";
+
+// type InputProps = {
+//   input: string;
+//   onChangeInput: (inputValue: string) => void;
+// };
+// // mocked input component
+
+// const InputComponent = ({ input, onChangeInput }: InputProps) => {
+//   // const [inputValue, setInputValue] = useState("");
+//   const [error, setError] = useState(false);
+
+//   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+//     onChangeInput(event.target.value);
+//     console.log(error);
+//     if (input.length === 0) {
+//       setError(true);
+//       console.log(error);
+//     } else setError(false);
+//   };
+
+//   return <input value={input} onChange={handleInput} />;
+// };
+
+// // mocked combo box component
+// const ComboBoxComponent = () => {
+//   const [input, setInput] = useState("");
+//   const handleInput = (inputValue: string) => {
+//     setInput(inputValue);
+//   };
+
+//   return <InputComponent input={input} onChangeInput={handleInput} />;
+// };
 
 describe("Input component", () => {
   it("renders", async () => {
-    render(<Input input="" setInput={() => {}} />);
+    render(<Input input="" onChangeInput={() => {}} />);
     await waitFor(() => {
       expect(true).toBeTruthy();
     });
   });
 
   it("contains input container", async () => {
-    render(<Input input="" setInput={() => {}} />);
+    render(<Input input="" onChangeInput={() => {}} />);
     const containerEl = screen.getByTestId("input-container");
     await waitFor(() => {
       expect(containerEl).toBeInTheDocument();
@@ -19,7 +53,7 @@ describe("Input component", () => {
   });
 
   it("contains label and input wrapper", async () => {
-    render(<Input input="" setInput={() => {}} />);
+    render(<Input input="" onChangeInput={() => {}} />);
     const labelEl = screen.getByTestId("input-label");
     const wrapperEl = screen.getByTestId("input-wrapper");
     await waitFor(() => {
@@ -29,59 +63,117 @@ describe("Input component", () => {
   });
 
   it("contains input text", async () => {
-    render(<Input input="" setInput={() => {}} />);
+    render(<Input input="" onChangeInput={() => {}} />);
     const textEl = screen.getByTestId("input-text");
     await waitFor(() => {
       expect(textEl).toBeInTheDocument();
     });
   });
 
-  // it("Input component contains clear button", async () => {
-  //   render(<Input input="" setInput={() => {}} />);
-  //   const clearEl = screen.getByTestId("input-clear");
-  //   await waitFor(
-  //     () => {
-  //       expect(clearEl).toBeInTheDocument();
-  //     },
-  //     { timeout: 3000 }
-  //   );
+  it("contains label and placeholder default text", async () => {
+    render(<Input input="" onChangeInput={() => {}} />);
+    await waitFor(() => {
+      expect(screen.getByTestId("input-label")).toHaveTextContent(
+        "Label inputu"
+      );
+      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
+        "Uživatelský vstup"
+      );
+    });
+  });
+
+  it("should display the initial value", async () => {
+    const testValue = "test";
+    render(<Input input={testValue} onChangeInput={() => {}} />);
+    const input = screen.getByRole("textbox");
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe(testValue);
+    });
+  });
+
+  it("should call the onChangeInput callback when value change", async () => {
+    const handleInput = jest.fn();
+    const testValue = "test";
+    render(<Input input="" onChangeInput={handleInput} />);
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: testValue } });
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalledWith(testValue);
+    });
+  });
+
+  // it("should call onChangeInput handle input handler", async () => {
+  //   const handleInput = jest.fn();
+  //   const inputValue = "Test";
+  //   render(<Input input="" onChangeInput={() => {}} />);
+  //   const input = screen.getByRole("textbox");
+  //   fireEvent.change(input, { target: { value: inputValue } });
+  //   await waitFor(() => {
+  //     // expect(handleInput).toHaveBeenCalledWith(inputValue);
+  //     expect(input.getAttribute("value")).toBe(inputValue);
+  //   });
   // });
 
-  it("contains label and placeholder default text", async () => {
-    render(<Input input="" setInput={() => {}} />);
-    await waitFor(() => {
-      expect(screen.getByTestId("input-label")).toHaveTextContent(
-        "Label inputu"
-      );
-      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
-        "Uživatelský vstup"
-      );
-    });
-  });
+  // it("changes input text", async () => {
+  //   // render(<InputComponent />);
+  //   const handleInput = jest.fn();
+  //   render(<Input input="" onChangeInput={handleInput} />);
 
-  it("contains label and placeholder default text", async () => {
-    render(<Input input="" setInput={() => {}} />);
-    await waitFor(() => {
-      expect(screen.getByTestId("input-label")).toHaveTextContent(
-        "Label inputu"
-      );
-      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
-        "Uživatelský vstup"
-      );
-    });
-  });
+  //   // const defaultText = "";
+  //   const testText = "test";
 
-  it("changes input text", async () => {
-    const handleInput = jest.fn();
-    const inputText = "test";
-    render(<Input input={inputText} setInput={handleInput} />);
-    fireEvent.change(screen.getByTestId("input-text"), {
-      target: { value: "test" },
-    });
-    await waitFor(() => {
-      expect(screen.getByTestId("input-text").getAttribute("value")).toBe(
-        "test"
-      );
-    });
-  });
+  //   // check if value is changed after change event
+  //   await waitFor(() => {
+  //     const input = screen.getByPlaceholderText("Uživatelský vstup");
+  //     fireEvent.change(input, {
+  //       target: { value: testText },
+  //     });
+  //     expect(input.getAttribute("value")).toBe(testText);
+  //     screen.debug();
+  //   });
+  // });
+  // it("changes input text", async () => {
+  //   // const user = userEvent.setup();
+
+  //   const handleInput = jest.fn();
+
+  //   const defaultText = "";
+  //   const testText = "test";
+
+  //   render(<Input input={defaultText} onChangeInput={handleInput} />);
+
+  //   // const input = screen.getByTestId("input-text");
+  //   const input = screen.getByPlaceholderText("Uživatelský vstup");
+  //   // console.log(input);
+
+  //   // // // check if default value is empty
+  //   // await waitFor(() => {
+  //   //   expect(input.getAttribute("value")).toBe(defaultText);
+  //   // });
+
+  //   // await user.type(screen.getByPlaceholderText("Uživatelský vstup"), testText);
+  //   // screen.debug();
+  //   // expect(screen.getByTestId("input-text")).toHaveValue(testText);
+
+  //   // await user.type(input, testText);
+
+  //   // expect(input.getAttribute("value")).toBe(testText);
+
+  //   // check if value is changed after change event
+  //   await waitFor(() => {
+  //     fireEvent.change(input, {
+  //       target: { value: testText },
+  //     });
+  //     expect(input.getAttribute("value")).toBe(testText);
+  //   });
+  //   // // change if changed back to default value
+  //   // fireEvent.change(screen.getByTestId("input-text"), {
+  //   //   target: { value: defaultText },
+  //   // });
+  //   // await waitFor(() => {
+  //   //   expect(screen.getByTestId("input-text").getAttribute("value")).toBe(
+  //   //     defaultText
+  //   //   );
+  //   // });
+  // });
 });
