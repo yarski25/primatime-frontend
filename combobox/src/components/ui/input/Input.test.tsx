@@ -28,11 +28,12 @@ describe("Input component", () => {
     });
   });
 
-  it("contains input text", async () => {
+  it("contains input text and enabled by default", async () => {
     render(<Input input="" onChangeInput={() => {}} />);
     const textEl = screen.getByTestId("input-text");
     await waitFor(() => {
       expect(textEl).toBeInTheDocument();
+      expect(textEl).toBeEnabled();
     });
   });
 
@@ -66,6 +67,40 @@ describe("Input component", () => {
     const input = screen.getByRole("textbox");
     await waitFor(() => {
       expect(input.getAttribute("value")).toBe(testValue);
+    });
+  });
+
+  it("should contain label, text, error message and disabled props", async () => {
+    const testValue = "test";
+    const [labelValue, textValue, errorMsgValue]: string[] = [
+      ...Array(3).keys(),
+    ].map((v, i) => testValue + i);
+    const disabled = true;
+
+    render(
+      <Input
+        input=""
+        onChangeInput={() => {}}
+        label={labelValue}
+        text={textValue}
+        errorMsg={errorMsgValue}
+        disabled={disabled}
+      />
+    );
+    screen.debug();
+    const input = screen.getByRole("textbox");
+    await waitFor(() => {
+      expect(input).toBeDisabled();
+      expect(screen.getByTestId("input-label")).toHaveTextContent(labelValue);
+      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
+        textValue
+      );
+    });
+    fireEvent.change(input, { target: { value: testValue } });
+    fireEvent.change(input, { target: { value: "" } });
+    const error = screen.getByText(errorMsgValue);
+    await waitFor(() => {
+      expect(error).toBeInTheDocument();
     });
   });
 
