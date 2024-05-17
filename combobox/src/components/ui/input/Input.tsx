@@ -29,7 +29,7 @@ const Input = ({
   input,
   onChangeInput,
   errorMsg = "Prázdný vstup",
-  disabled,
+  disabled = false,
   floatingProps,
 }: InputProps) => {
   const [error, setError] = useState(false);
@@ -50,7 +50,7 @@ const Input = ({
 
   return (
     <div className={styles.inputContainer} data-testid="input-container">
-      <label data-testid="input-label">{label ? label : "Label name"}</label>
+      <label data-testid="input-label">{label}</label>
       <br />
       <div className={styles.inputWrapper} data-testid="input-wrapper">
         <input
@@ -62,8 +62,8 @@ const Input = ({
           name="input"
           value={userInput}
           onChange={(event) => handleInput(event)}
-          disabled={disabled ? disabled : false}
-          placeholder={text ? text : "Text input"}
+          disabled={disabled}
+          placeholder={text}
           ref={floatingProps?.setReference}
           {...floatingProps?.getReferenceProps()}
         />
@@ -79,11 +79,7 @@ const Input = ({
           onClick={handleReset}
         />
       </div>
-      {error && (
-        <div className={styles.inputErrorMsg}>
-          {errorMsg ? errorMsg : "Chyba"}
-        </div>
-      )}
+      {error && <div className={styles.inputErrorMsg}>{errorMsg}</div>}
     </div>
   );
 };

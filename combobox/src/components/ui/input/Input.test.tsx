@@ -48,6 +48,18 @@ describe("Input component", () => {
     });
   });
 
+  it("contains label and placeholder default text", async () => {
+    render(<Input input="" onChangeInput={() => {}} />);
+    await waitFor(() => {
+      expect(screen.getByTestId("input-label")).toHaveTextContent(
+        "Label inputu"
+      );
+      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
+        "Uživatelský vstup"
+      );
+    });
+  });
+
   it("should display the initial value", async () => {
     const testValue = "test";
     render(<Input input={testValue} onChangeInput={() => {}} />);
