@@ -31,10 +31,6 @@ const ComboBox = () => {
 
   const debouncedSearchQuery = useDebouncedValue(input, 2000);
 
-  // useEffect(() => {
-  //   console.log(input);
-  // }, [debouncedSearchQuery]);
-
   const { refs, floatingStyles, context, strategy } = useFloating<HTMLElement>({
     placement: "bottom-start",
     open: isOpen,
@@ -58,7 +54,6 @@ const ComboBox = () => {
   });
 
   const listRef = useRef<Array<HTMLElement | null>>([]);
-  // const listContentRef = useRef(data);
 
   const listNavigation = useListNavigation(context, {
     listRef,
@@ -85,6 +80,8 @@ const ComboBox = () => {
     ]
   );
 
+  // event handlers
+
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
     if (selectedIndex) {
@@ -95,32 +92,9 @@ const ComboBox = () => {
 
   const handleInput = (inputValue: string) => {
     setInput(inputValue);
-    // if (
-    //   event.target.value &&
-    //   !event.currentTarget.classList.contains("inputText--touched")
-    // ) {
-    //   event.currentTarget.classList.add("inputText--touched");
-    // } else if (
-    //   !event.target.value &&
-    //   event.currentTarget.classList.contains("inputText--touched")
-    // )
-    //   event.currentTarget.classList.remove("inputText--touched");
   };
 
-  // const handleReset = (e: React.MouseEvent) => {
-  //   if (e.currentTarget) setInput("");
-  //   console.log("reset click!");
-  //   console.log(e.target);
-  //   console.log(e.currentTarget);
-  //   // inputRef?.current.focus();
-  //   // inputText?.focus();
-  //   // inputText?.classList.remove("inputText--touched");
-  // };
-
-  // // access to client
-  // const queryClient = useQueryClient();
-
-  // queries
+  // tanstack queries
   const { isLoading, error, data } = useQuery<Uni[], Error>({
     queryKey: ["unis", debouncedSearchQuery],
     queryFn: async () => {
@@ -131,25 +105,6 @@ const ComboBox = () => {
 
   const selectedItemLabel =
     selectedIndex !== null ? data?.[selectedIndex] : undefined;
-
-  // const { isLoading, error, data } = useQuery({
-  //   queryKey: ["unis"],
-  //   queryFn: () =>
-  //     fetch("https://api.github.com/repos/TanStack/query").then((res) =>
-  //       res.json()
-  //     ),
-  // });
-
-  // // mutations
-  // const mutation = useMutation({
-  //   mutationFn: test,
-  //   onSuccess: () => {
-  //     // invalidate and refetch
-  //     queryClient.invalidateQueries({queryKey: ["repoData"]})
-  //   }
-  // })
-
-  // if (isLoading) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;
 

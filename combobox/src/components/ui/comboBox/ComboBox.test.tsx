@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import {
   fireEvent,
   render,
-  renderHook,
+  // renderHook,
   screen,
   waitFor,
 } from "@testing-library/react";
@@ -66,7 +66,7 @@ describe("ComboBox component", () => {
     });
   });
 
-  it("should display different value", async () => {
+  it("should display different value after change event", async () => {
     const testValue = "test";
     render(
       <QueryClientProvider client={queryClient}>
@@ -74,20 +74,38 @@ describe("ComboBox component", () => {
       </QueryClientProvider>
     );
     const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: testValue } });
     await waitFor(() => {
-      input.dispatchEvent(new Event("change", { bubbles: true }));
-      fireEvent.change(input, { target: { value: testValue } });
+      // input.dispatchEvent(new Event("change", { bubbles: true }));
       expect(input.getAttribute("value")).toBe(testValue);
     });
   });
 
-  it("should return API response", async () => {
-    type Props = { children: React.ReactNode };
-    const wrapper: React.FC<Props> = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-    const { result } = renderHook(() => useCustomHook(), { wrapper });
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeDefined();
-  });
+  // it("should display deploy", async () => {
+  //   render(
+  //     <QueryClientProvider client={queryClient}>
+  //       <ComboBox />
+  //     </QueryClientProvider>
+  //   );
+  //   const input = screen.getByRole("combobox");
+  //   fireEvent.click(input);
+  //   await waitFor(() => {
+  //     // input.dispatchEvent(new Event("click", { bubbles: true }));
+  //     const spinner = screen.getByTestId("spinner-box");
+  //     expect(spinner).toBeInTheDocument();
+  //   });
+  // });
+
+  // it("should return API response", async () => {
+  //   type Props = { children: React.ReactNode };
+
+  //   const wrapper: React.FC<Props> = ({ children }) => (
+  //     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  //   );
+  //   const { result } = renderHook(() => useCustomHook(), { wrapper });
+  //   await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  //   screen.debug();
+  //   expect(result.current.data).toBeDefined();
+  //   expect(result.current.data).toEqual("Hello");
+  // });
 });

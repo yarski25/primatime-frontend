@@ -98,7 +98,49 @@ describe("Input component", () => {
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: testValue } });
     await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(1);
       expect(handleInput).toHaveBeenCalledWith(testValue);
+    });
+  });
+
+  it("should display error message if onChangeInput callback empty next after value change", async () => {
+    const handleInput = jest.fn();
+    const testValue = "test";
+    const errorMsg = "Prázdný vstup";
+    render(<Input input="" onChangeInput={handleInput} />);
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: testValue } });
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(1);
+      expect(handleInput).toHaveBeenCalledWith(testValue);
+    });
+    fireEvent.change(input, { target: { value: "" } });
+    const error = screen.getByText(errorMsg);
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(2);
+      expect(handleInput).toHaveBeenCalledWith("");
+      expect(error).toBeInTheDocument();
+    });
+  });
+
+  it("should reset input value if reset button triggered", async () => {
+    const handleInput = jest.fn();
+    const testValue = "test";
+    render(<Input input="" onChangeInput={handleInput} />);
+    const input = screen.getByRole("textbox");
+    const reset = await screen.findByTestId("input-clear");
+    fireEvent.change(input, { target: { value: testValue } });
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(1);
+      expect(handleInput).toHaveBeenCalledWith(testValue);
+    });
+    fireEvent.click(reset);
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe("");
     });
   });
 
