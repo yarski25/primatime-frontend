@@ -87,7 +87,6 @@ describe("Input component", () => {
         disabled={disabled}
       />
     );
-    screen.debug();
     const input = screen.getByRole("textbox");
     await waitFor(() => {
       expect(input).toBeDisabled();
