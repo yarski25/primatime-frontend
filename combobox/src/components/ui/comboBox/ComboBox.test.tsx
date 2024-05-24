@@ -1,81 +1,34 @@
 import "@testing-library/jest-dom";
 import {
+  act,
   fireEvent,
-  render,
+  // render,
   // renderHook,
   screen,
   waitFor,
+  // within,
 } from "@testing-library/react";
 import ComboBox from "./ComboBox";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
-// import UniService from "@/api/UniService";
-// import { Uni } from "@/types/university";
-// import UniService from "@/api/UniService";
-// import { Uni } from "@/types/university";
-// import UniService from "@/api/UniService";
-// import mockAxios from "@/api/__mocks__/axios";
-// import axios from "@/api/axiosConfig";
 import axios from "axios";
-
-export function useCustomHook() {
-  return useQuery({ queryKey: ["customHook"], queryFn: () => "Hello query!" });
-}
+import UniService from "@/api/UniService";
+import { Uni } from "@/types/university";
+import { renderWithClient } from "@/utils/test-utils";
 
 describe("ComboBox component", () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
+  let waitForPosition: () => void;
 
-  afterEach(() => {
+  beforeEach(() => {
+    waitForPosition = () => act(async () => {});
     jest.clearAllMocks();
   });
 
-  // let response;
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-  // beforeEach(() => {
-  //   response = {
-  //     data: [
-  //       { id: 1, name: "Uni 1" },
-  //       { id: 2, name: "Uni 2" },
-  //       { id: 3, name: "Uni 3" },
-  //     ],
-  //   };
-  // });
-
-  // jest.mock("@/api/UniService");
-
-  jest.mock("@tanstack/react-query", () => ({
-    useQuery: jest.fn(() => ({
-      isLoading: false,
-      data: [
-        { id: 1, name: "Uni 1" },
-        { id: 2, name: "Uni 2" },
-        { id: 3, name: "Uni 3" },
-      ],
-    })),
-  }));
-
-  // jest.mock("@/api/axiosConfig", () => {
-  //   return {
-  //     get: jest.fn(),
-  //   };
-  // });
-  // jest.mock("axios");
+  jest.mock("axios");
+  const mockedAxios = jest.mocked(axios);
   // const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-  // jest.mock("@/api/axiosConfig", () => ({
-  //   get: jest.fn(() => Promise.resolve({ data: ["name"] })),
-  // }));
-
-  // jest.mock("@/api/UniService");
 
   // const mockGetUnisByName = jest.fn();
   // jest.mock("@/api/UniService", () => {
@@ -84,7 +37,7 @@ describe("ComboBox component", () => {
   //     default: {
   //       UniService: {
   //         getUnisByName: jest.fn(async (name: string): Promise<Uni[]> => {
-  //           console.log(name);
+  //           mockGetUnisByName(name);
   //           return [{ name: "uni 1" }, { name: "uni 2" }, { name: "uni 3" }];
   //         }),
   //       },
@@ -92,35 +45,23 @@ describe("ComboBox component", () => {
   //   };
   // });
 
-  // jest.mock("@/api/UniService", () => {
-  //   return {
-  //     __esModule: true,
-  //     default: jest.fn(() => ({ response: "test" })),
-  //   };
-  // });
-
-  jest.mock("axios");
-  // jest.mock('axios', () => ({
-  //   __esModule: true,
-  //   default: axios,
-  //   }));
-
-  // jest.mock("axios", () => {
-  //   return {
-  //     create: jest.fn(() => axios),
-  //     get: jest.fn(() => Promise.resolve({ data: {} })),
-  //   };
-  // });
-  // const mockedAxios = axios as jest.Mocked<typeof axios>;
-  const mockedAxios = jest.mocked(axios);
-  // const mockedAxios = jest.mocked(axios, { shallow: true });
+  // jest.mock("@tanstack/react-query", () => ({
+  //   QueryClient: jest.fn(),
+  //   QueryClientProvider: ({ children }: { children: React.ReactNode }) =>
+  //     children,
+  //   useQueryClient: jest.fn(),
+  //   useQuery: jest.fn().mockReturnValue({
+  //     isLoading: false,
+  //     data: [{ id: 1 }, { id: 2 }],
+  //   }),
+  //   useMutation: jest.fn().mockReturnValue({
+  //     mutate: jest.fn(),
+  //     isLoading: false,
+  //   }),
+  // }));
 
   it("renders", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ComboBox />
-      </QueryClientProvider>
-    );
+    renderWithClient(<ComboBox />);
     await waitFor(() => {
       expect(true).toBeTruthy();
     });
@@ -128,11 +69,7 @@ describe("ComboBox component", () => {
 
   it("should call onChangeInput method when input value changes", async () => {
     const handleInput = jest.fn();
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ComboBox />
-      </QueryClientProvider>
-    );
+    renderWithClient(<ComboBox />);
     const input = screen.getByRole("combobox");
     await waitFor(() => {
       input.addEventListener("change", handleInput);
@@ -144,11 +81,7 @@ describe("ComboBox component", () => {
   });
 
   it("should display the initial value", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ComboBox />
-      </QueryClientProvider>
-    );
+    renderWithClient(<ComboBox />);
     const input = screen.getByRole("combobox");
     await waitFor(() => {
       expect(input.getAttribute("value")).toBe("");
@@ -157,11 +90,7 @@ describe("ComboBox component", () => {
 
   it("should display different value after change event", async () => {
     const testValue = "test";
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ComboBox />
-      </QueryClientProvider>
-    );
+    renderWithClient(<ComboBox />);
     const input = screen.getByRole("combobox");
     fireEvent.change(input, { target: { value: testValue } });
     await waitFor(() => {
@@ -169,66 +98,80 @@ describe("ComboBox component", () => {
     });
   });
 
-  it("should return list of universities after click", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <ComboBox />
-      </QueryClientProvider>
-    );
-    const unis = [{ name: "Uni 1" }, { name: "Uni 2" }, { name: "Uni 3" }];
+  it("should call getUnisByName service after click", async () => {
+    renderWithClient(<ComboBox />);
+    const name = "czech";
+
+    const unis: Uni[] = [
+      { name: "Uni 1" },
+      { name: "Uni 2" },
+      { name: "Uni 3" },
+    ];
+    const response = { data: unis };
+    mockedAxios.get.mockResolvedValue(response);
+
     const input = screen.getByRole("combobox");
     fireEvent.click(input);
-    // fireEvent.change(input, { target: { value: "c" } });
-    // UniService.getUnisByName("c");
-    // mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: {} }));
-    mockedAxios.get.mockResolvedValue(unis);
-    // await UniService.getUnisByName(name);
-    await waitFor(() => {
-      // (mockedAxios.get as jest.Mock).mockResolvedValue(response);
 
-      // mockedAxios.mockResolvedValue({ data: "c" });
-      // const result = UniService.getUnisByName("c");
-      // expect(mockedAxios.get).toHaveBeenCalled();
-      // expect(UniService).toHaveBeenCalled();
-      // expect(result).toEqual([]);
+    await waitFor(() => {
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-      screen.debug();
-      // expect(UniService.getUnisByName("c")).toHaveBeenCalledTimes(1);
-      // expect(input.getAttribute("value")).toBe("");
-      // expect(UniService.getUnisByName("c")).toHaveBeenCalledTimes(1);
+      expect(UniService.getUnisByName(name)).resolves.toEqual(response.data);
     });
-    // const list = await screen.findByRole("list");
-    // await waitFor(() => {
-    //   expect(list).toBeInTheDocument();
-    //   screen.debug();
-    // });
   });
 
-  // it("should display deploy", async () => {
-  //   render(
-  //     <QueryClientProvider client={queryClient}>
-  //       <ComboBox />
-  //     </QueryClientProvider>
-  //   );
-  //   const input = screen.getByRole("combobox");
-  //   fireEvent.click(input);
-  //   await waitFor(() => {
-  //     // input.dispatchEvent(new Event("click", { bubbles: true }));
-  //     const spinner = screen.getByTestId("spinner-box");
-  //     expect(spinner).toBeInTheDocument();
-  //   });
-  // });
+  it("should return list of unis after click", async () => {
+    renderWithClient(<ComboBox />);
 
-  // it("should return API response", async () => {
-  //   type Props = { children: React.ReactNode };
+    const unis: Uni[] = [
+      { name: "Uni 1" },
+      { name: "Uni 2" },
+      { name: "Uni 3" },
+    ];
+    const response = { data: unis };
+    mockedAxios.get.mockResolvedValue(response);
 
-  //   const wrapper: React.FC<Props> = ({ children }) => (
-  //     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  //   );
-  //   const { result } = renderHook(() => useCustomHook(), { wrapper });
-  //   await waitFor(() => expect(result.current.isSuccess).toBe(true));
-  //   screen.debug();
-  //   expect(result.current.data).toBeDefined();
-  //   expect(result.current.data).toEqual("Hello");
-  // });
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+
+    const list = await screen.findByRole("list");
+    await waitFor(() => {
+      expect(list).toBeInTheDocument();
+      screen.debug();
+    });
+  });
+
+  it("should select item of list of unis", async () => {
+    renderWithClient(<ComboBox />);
+    await waitForPosition();
+
+    const unis: Uni[] = [
+      { name: "Uni 1" },
+      { name: "Uni 2" },
+      { name: "Uni 3" },
+    ];
+    const response = { data: unis };
+    mockedAxios.get.mockResolvedValue(response);
+
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+
+    // const list = await screen.findByRole("list");
+    // const item = await screen.findByText("Uni 1");
+    const items = await screen.findAllByText(/Uni/);
+    fireEvent.click(items[0]);
+
+    await waitFor(() => {
+      expect(items).toBeDefined();
+      expect(items).toHaveLength(3);
+      expect(items[0]).toHaveAttribute("aria-selected", "true");
+      screen.debug();
+    });
+
+    fireEvent.click(items[1]);
+    await waitFor(() => {
+      expect(items[0]).toHaveAttribute("aria-selected", "false");
+      expect(items[1]).toHaveAttribute("aria-selected", "true");
+      screen.debug();
+    });
+  });
 });
