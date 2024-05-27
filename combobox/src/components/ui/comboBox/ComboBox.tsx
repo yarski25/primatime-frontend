@@ -84,7 +84,11 @@ const ComboBox = () => {
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
+    console.log("handleSelect! index:" + index);
+    console.log("selectedIndex: " + selectedIndex);
+    console.log(data);
     if (selectedIndex) {
+      console.log("selected index: " + index);
       const selectedInput = data?.[selectedIndex].name as string;
       setInput(selectedInput);
     }

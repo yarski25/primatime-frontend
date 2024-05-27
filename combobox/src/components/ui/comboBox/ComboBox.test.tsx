@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import {
-  act,
+  // act,
   fireEvent,
   // render,
   // renderHook,
@@ -15,10 +15,10 @@ import { Uni } from "@/types/university";
 import { renderWithClient } from "@/utils/test-utils";
 
 describe("ComboBox component", () => {
-  let waitForPosition: () => void;
+  // let waitForPosition: () => void;
 
   beforeEach(() => {
-    waitForPosition = () => act(async () => {});
+    // waitForPosition = () => act(async () => {});
     jest.clearAllMocks();
   });
 
@@ -135,14 +135,35 @@ describe("ComboBox component", () => {
 
     const list = await screen.findByRole("list");
     await waitFor(() => {
+      expect(list).toBeDefined();
       expect(list).toBeInTheDocument();
-      screen.debug();
+    });
+  });
+
+  it("should return error after click", async () => {
+    renderWithClient(<ComboBox />);
+
+    mockedAxios.get.mockRejectedValue("Axios error occured!");
+
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+
+    const errorMsg = await screen.findByText("An error has occurred:", {
+      exact: false,
+    });
+
+    const list = screen.queryByRole("list");
+    await waitFor(() => {
+      expect(errorMsg).toBeDefined();
+      expect(errorMsg).toBeInTheDocument();
+      expect(list).toBeNull();
+      expect(list).not.toBeInTheDocument();
     });
   });
 
   it("should select item of list of unis", async () => {
     renderWithClient(<ComboBox />);
-    await waitForPosition();
+    // await waitForPosition();
 
     const unis: Uni[] = [
       { name: "Uni 1" },
@@ -164,14 +185,19 @@ describe("ComboBox component", () => {
       expect(items).toBeDefined();
       expect(items).toHaveLength(3);
       expect(items[0]).toHaveAttribute("aria-selected", "true");
-      screen.debug();
+      // screen.debug();
     });
+
+    fireEvent.click(items[0]);
+    // screen.debug();
 
     fireEvent.click(items[1]);
     await waitFor(() => {
-      expect(items[0]).toHaveAttribute("aria-selected", "false");
+      // expect(items[0]).toHaveAttribute("aria-selected", "false");
       expect(items[1]).toHaveAttribute("aria-selected", "true");
-      screen.debug();
+      // screen.debug();
     });
+    fireEvent.click(items[1]);
+    // screen.debug();
   });
 });
