@@ -8,6 +8,7 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
+    // server: { origin: "http://0.0.0.0:5173" },
     define: {
       "process.env.REACT_APP_API_URL": JSON.stringify(env.REACT_APP_API_URL),
     },

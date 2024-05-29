@@ -35,7 +35,11 @@ const ComboBox = () => {
     placement: "bottom-start",
     open: isOpen,
     onOpenChange(isOpen, event, reason) {
-      setIsOpen(isOpen);
+      if (reason === "escape-key" || reason === "outside-press") {
+        setIsOpen(isOpen);
+      }
+      if (reason === "click") setIsOpen(true);
+
       event && console.log(event); // e.g. MouseEvent
       reason && console.log(reason); // e.g. 'hover'
     },
@@ -87,16 +91,27 @@ const ComboBox = () => {
     console.log("handleSelect! index:" + index);
     console.log("selectedIndex: " + selectedIndex);
     console.log(data);
-    if (selectedIndex) {
-      console.log("selected index: " + index);
-      const selectedInput = data?.[selectedIndex].name as string;
-      setInput(selectedInput);
-    }
+    // if (selectedIndex) {
+    console.log("selected index: " + index);
+    const selectedInput = data?.[index].name as string;
+    setInput(selectedInput);
+    setIsOpen(false);
+    // }
   };
 
   const handleInput = (inputValue: string) => {
     setInput(inputValue);
   };
+
+  // useEffect(() => {
+  //   console.log("useEffect call!");
+  //   if (selectedIndex) {
+  //     console.log("selected index: " + selectedIndex);
+  //     const selectedInput = data?.[selectedIndex].name as string;
+  //     setInput(selectedInput);
+  //     setIsOpen(false);
+  //   }
+  // }, [selectedIndex]);
 
   // tanstack queries
   const { isLoading, error, data } = useQuery<Uni[], Error>({
