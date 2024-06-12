@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./Input.module.scss";
-import { FloatingNode, ReferenceType } from "@floating-ui/react";
+import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "types/university";
 import SvgIcon from "components/ui/svg/SvgIcon";
 
@@ -33,16 +33,28 @@ const Input = ({
   floatingProps,
 }: InputProps) => {
   const [error, setError] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   // const [userInput, setUserInput] = useState<string>(input);
   // const hasBeenPageRendered = useRef(false);
   // const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsFocused(true);
     onChangeInput(event.target.value);
     // setUserInput(event.target.value);
     if (event.target.value.length === 0) {
       setError(true);
     } else setError(false);
+  };
+
+  // const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+  //   setIsFocused(true);
+  //   console.log("handleFocus");
+  // };
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    setIsFocused(false);
+    console.log("handleBlur");
   };
 
   const handleReset = (e: React.MouseEvent) => {
@@ -70,6 +82,10 @@ const Input = ({
   //   }
   //   hasBeenPageRendered.current = true;
   // }, [input]);
+  useEffect(() => {
+    console.log("(input) I fire once");
+    setIsFocused(true);
+  }, [input]);
 
   return (
     <div className={styles.inputContainer} data-testid="input-container">
@@ -84,29 +100,39 @@ const Input = ({
           type="text"
           autoComplete="off"
           name="input"
-          value={input}
+          value={
+            isFocused
+              ? input
+              : input.length > 25
+              ? input.substring(0, 24) + "..."
+              : input
+          }
           onChange={handleInput}
+          // onFocus={handleFocus}
+          onBlur={handleBlur}
           disabled={disabled}
           placeholder={text}
           ref={floatingProps?.setReference}
           {...floatingProps?.getReferenceProps({
-            onMouseOver: (e: React.MouseEvent) => {
-              console.log("mouseOver");
-            },
+            // onMouseOver: (e: React.MouseEvent) => {
+            //   console.log("mouseOver");
+            // },
             // onFocus: () => console.log("focused"),
           })}
         />
-        <SvgIcon
-          wrapperStyle={styles.clearBtn}
-          iconName="clearButton"
-          svgProp={{
-            width: 16,
-            height: 16,
-            fill: "black",
-            stroke: "white",
-          }}
-          onClick={handleReset}
-        />
+        {input && (
+          <SvgIcon
+            wrapperStyle={styles.clearBtn}
+            iconName="clearButton"
+            svgProp={{
+              width: 16,
+              height: 16,
+              fill: "black",
+              stroke: "white",
+            }}
+            onClick={handleReset}
+          />
+        )}
       </div>
       {error && <div className={styles.inputErrorMsg}>{errorMsg}</div>}
     </div>

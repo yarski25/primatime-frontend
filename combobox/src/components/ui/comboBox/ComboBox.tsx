@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   autoUpdate,
   useFloating,
@@ -31,12 +31,23 @@ const ComboBox = () => {
 
   const debouncedSearchQuery = useDebouncedValue(input, 2000);
 
+  const [selectedInput, setSelectedInput] = useState("");
+
   const { refs, floatingStyles, context, strategy } = useFloating<HTMLElement>({
     placement: "bottom-start",
     open: isOpen,
     onOpenChange(isOpen, event, reason) {
       if (reason === "escape-key" || reason === "outside-press") {
-        setIsOpen(isOpen);
+        console.log(input.length);
+        console.log(input);
+        console.log(selectedInput.length);
+        console.log(selectedInput);
+        if (input.length > 0 && selectedInput.length > 0) {
+          setInput(selectedInput);
+          setIsOpen(false);
+        } else {
+          setIsOpen(isOpen);
+        }
       }
       if (reason === "click") setIsOpen(true);
 
@@ -88,14 +99,17 @@ const ComboBox = () => {
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
-    console.log("handleSelect! index:" + index);
-    console.log("selectedIndex: " + selectedIndex);
-    console.log(data);
-    // if (selectedIndex) {
-    console.log("selected index: " + index);
-    const selectedInput = data?.[index].name as string;
-    setInput(selectedInput);
-    setIsOpen(false);
+    // console.log("handleSelect! index:" + index);
+    // console.log("selectedIndex: " + selectedIndex);
+    // console.log("activeIndex: " + activeIndex);
+    // console.log(data);
+    // if (activeIndex) {
+    // console.log("selected index: " + index);
+    // setSelectedInput(data?.[index].name as string);
+    // // selectedInput = data?.[index].name as string;
+    // console.log(selectedInput);
+    // setInput(selectedInput);
+    // setIsOpen(false);
     // }
   };
 
@@ -103,15 +117,18 @@ const ComboBox = () => {
     setInput(inputValue);
   };
 
-  // useEffect(() => {
-  //   console.log("useEffect call!");
-  //   if (selectedIndex) {
-  //     console.log("selected index: " + selectedIndex);
-  //     const selectedInput = data?.[selectedIndex].name as string;
-  //     setInput(selectedInput);
-  //     setIsOpen(false);
-  //   }
-  // }, [selectedIndex]);
+  useEffect(() => {
+    console.log("(combobox) I fire once");
+    if (selectedIndex) {
+      const selectedInput = data?.[selectedIndex].name as string;
+      console.log("selected index: " + selectedIndex);
+      console.log("selected input: " + selectedInput);
+      setInput(selectedInput);
+      setIsOpen(false);
+      // setSelectedIndex(null);
+    }
+  }, [selectedIndex]);
+  // useEffect(() => {});
 
   // tanstack queries
   const { isLoading, error, data } = useQuery<Uni[], Error>({
