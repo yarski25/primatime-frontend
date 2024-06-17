@@ -99,18 +99,6 @@ const ComboBox = () => {
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
-    // console.log("handleSelect! index:" + index);
-    // console.log("selectedIndex: " + selectedIndex);
-    // console.log("activeIndex: " + activeIndex);
-    // console.log(data);
-    // if (activeIndex) {
-    // console.log("selected index: " + index);
-    // setSelectedInput(data?.[index].name as string);
-    // // selectedInput = data?.[index].name as string;
-    // console.log(selectedInput);
-    // setInput(selectedInput);
-    // setIsOpen(false);
-    // }
   };
 
   const handleInput = (inputValue: string) => {
@@ -119,13 +107,13 @@ const ComboBox = () => {
 
   useEffect(() => {
     console.log("(combobox) I fire once");
-    if (selectedIndex) {
+    if (selectedIndex !== null) {
       const selectedInput = data?.[selectedIndex].name as string;
       console.log("selected index: " + selectedIndex);
       console.log("selected input: " + selectedInput);
       setInput(selectedInput);
       setIsOpen(false);
-      // setSelectedIndex(null);
+      setSelectedIndex(null);
     }
   }, [selectedIndex]);
   // useEffect(() => {});
