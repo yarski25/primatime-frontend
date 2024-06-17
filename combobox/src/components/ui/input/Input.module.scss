@@ -6,8 +6,8 @@
 .clearBtn {
   // position
   position: absolute;
-  right: 2px;
-  top: 2px;
+  right: 6px;
+  top: 13px;
   // appearance
   justify-content: center;
   align-items: center;
@@ -53,6 +53,8 @@
   width: 200px;
 
   input {
+    margin-top: 0.5em;
+    padding: 8px;
     width: 100%;
   }
 

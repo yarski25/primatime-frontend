@@ -21,7 +21,7 @@ import Input from "components/ui/input/Input";
 import LoadingSpinner from "components/ui/loadingSpinner/LoadingSpinner";
 import { useDebouncedValue } from "hooks/useDebouncedValue";
 
-const OFFSET = 10;
+const OFFSET = 20;
 
 const ComboBox = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,6 +101,10 @@ const ComboBox = () => {
     setSelectedIndex(index);
   };
 
+  // const handleBlur = () => {
+  //   setIsFocus(false);
+  // };
+
   const handleInput = (inputValue: string) => {
     setInput(inputValue);
   };
@@ -178,6 +182,9 @@ const ComboBox = () => {
                       onClick() {
                         handleSelect(index);
                       },
+                      // onBlur() {
+                      //   handleBlur();
+                      // },
                     })}
                   >
                     {uni.name}

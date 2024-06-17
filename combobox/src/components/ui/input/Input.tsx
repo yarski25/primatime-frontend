@@ -125,8 +125,8 @@ const Input = ({
             wrapperStyle={styles.clearBtn}
             iconName="clearButton"
             svgProp={{
-              width: 16,
-              height: 16,
+              width: 24,
+              height: 24,
               fill: "black",
               stroke: "white",
             }}
