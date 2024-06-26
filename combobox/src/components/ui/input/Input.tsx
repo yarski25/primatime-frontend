@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FocusEvent, useEffect, useState } from "react";
 import styles from "./Input.module.scss";
 import { ReferenceType } from "@floating-ui/react";
 import { Uni } from "types/university";
@@ -18,6 +18,7 @@ type InputProps = {
   text?: string;
   input: string;
   onChangeInput: (inputValue: string) => void;
+  selectedInput: string;
   disabled?: boolean;
   errorMsg?: string;
   floatingProps?: floatingProps;
@@ -28,6 +29,7 @@ const Input = ({
   text = "Uživatelský vstup",
   input,
   onChangeInput,
+  selectedInput,
   errorMsg = "Prázdný vstup",
   disabled = false,
   floatingProps,
@@ -54,12 +56,15 @@ const Input = ({
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
     setIsFocused(false);
-    console.log("handleBlur");
+    console.log("handleBlur called");
+    console.log(isFocused);
+    console.log(event);
   };
 
   const handleReset = (e: React.MouseEvent) => {
     onChangeInput("");
     // setUserInput("");
+    console.log(e);
   };
 
   // const handleMouseOver = (e: React.MouseEvent) => {
@@ -85,6 +90,7 @@ const Input = ({
   useEffect(() => {
     console.log("(input) I fire once");
     setIsFocused(true);
+    console.log(selectedInput);
   }, [input]);
 
   return (

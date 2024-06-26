@@ -4,14 +4,14 @@ import Input from "./Input";
 
 describe("Input component", () => {
   it("renders", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     await waitFor(() => {
       expect(true).toBeTruthy();
     });
   });
 
   it("contains input container", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     const containerEl = screen.getByTestId("input-container");
     await waitFor(() => {
       expect(containerEl).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("Input component", () => {
   });
 
   it("contains label and input wrapper", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     const labelEl = screen.getByTestId("input-label");
     const wrapperEl = screen.getByTestId("input-wrapper");
     await waitFor(() => {
@@ -29,7 +29,7 @@ describe("Input component", () => {
   });
 
   it("contains input text and enabled by default", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     const textEl = screen.getByTestId("input-text");
     await waitFor(() => {
       expect(textEl).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("Input component", () => {
   });
 
   it("contains label and placeholder default text", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     await waitFor(() => {
       expect(screen.getByTestId("input-label")).toHaveTextContent(
         "Label inputu"
@@ -50,7 +50,7 @@ describe("Input component", () => {
   });
 
   it("contains label and placeholder default text", async () => {
-    render(<Input input="" onChangeInput={() => {}} />);
+    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
     await waitFor(() => {
       expect(screen.getByTestId("input-label")).toHaveTextContent(
         "Label inputu"
@@ -63,7 +63,9 @@ describe("Input component", () => {
 
   it("should display the initial value", async () => {
     const testValue = "test";
-    render(<Input input={testValue} onChangeInput={() => {}} />);
+    render(
+      <Input input={testValue} selectedInput="" onChangeInput={() => {}} />
+    );
     const input = screen.getByRole("textbox");
     await waitFor(() => {
       expect(input.getAttribute("value")).toBe(testValue);
@@ -80,6 +82,7 @@ describe("Input component", () => {
     render(
       <Input
         input=""
+        selectedInput=""
         onChangeInput={() => {}}
         label={labelValue}
         text={textValue}
@@ -106,7 +109,7 @@ describe("Input component", () => {
   it("should call the onChangeInput callback when value change", async () => {
     const handleInput = jest.fn();
     const testValue = "test";
-    render(<Input input="" onChangeInput={handleInput} />);
+    render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: testValue } });
     await waitFor(() => {
@@ -120,7 +123,7 @@ describe("Input component", () => {
     const handleInput = jest.fn();
     const testValue = "test";
     const errorMsg = "Prázdný vstup";
-    render(<Input input="" onChangeInput={handleInput} />);
+    render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
     const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: testValue } });
     await waitFor(() => {
@@ -141,7 +144,7 @@ describe("Input component", () => {
   it("should reset input value if reset button triggered", async () => {
     const handleInput = jest.fn();
     const testValue = "test";
-    render(<Input input="" onChangeInput={handleInput} />);
+    render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
     const input = screen.getByRole("textbox");
     const reset = await screen.findByTestId("input-clear");
     fireEvent.change(input, { target: { value: testValue } });

@@ -31,17 +31,18 @@ const ComboBox = () => {
 
   const debouncedSearchQuery = useDebouncedValue(input, 2000);
 
-  const [selectedInput, setSelectedInput] = useState("");
+  // const [selectedInput, setSelectedInput] = useState("");
+  let selectedInput = "";
 
   const { refs, floatingStyles, context, strategy } = useFloating<HTMLElement>({
     placement: "bottom-start",
     open: isOpen,
     onOpenChange(isOpen, event, reason) {
       if (reason === "escape-key" || reason === "outside-press") {
-        console.log(input.length);
-        console.log(input);
-        console.log(selectedInput.length);
-        console.log(selectedInput);
+        // console.log(input.length);
+        // console.log(input);
+        // console.log(selectedInput.length);
+        // console.log(selectedInput);
         if (input.length > 0 && selectedInput.length > 0) {
           setInput(selectedInput);
           setIsOpen(false);
@@ -112,7 +113,8 @@ const ComboBox = () => {
   useEffect(() => {
     console.log("(combobox) I fire once");
     if (selectedIndex !== null) {
-      const selectedInput = data?.[selectedIndex].name as string;
+      // const selectedInput = data?.[selectedIndex].name as string;
+      selectedInput = data?.[selectedIndex].name as string;
       console.log("selected index: " + selectedIndex);
       console.log("selected input: " + selectedInput);
       setInput(selectedInput);
@@ -141,6 +143,7 @@ const ComboBox = () => {
       <Input
         input={input}
         onChangeInput={handleInput}
+        selectedInput={selectedInput}
         floatingProps={{
           getReferenceProps: getReferenceProps,
           setReference: refs.setReference,
