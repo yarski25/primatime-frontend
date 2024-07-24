@@ -49,18 +49,6 @@ describe("Input component", () => {
     });
   });
 
-  it("contains label and placeholder default text", async () => {
-    render(<Input input="" selectedInput="" onChangeInput={() => {}} />);
-    await waitFor(() => {
-      expect(screen.getByTestId("input-label")).toHaveTextContent(
-        "Label inputu"
-      );
-      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
-        "Uživatelský vstup"
-      );
-    });
-  });
-
   it("should display the initial value", async () => {
     const testValue = "test";
     render(
@@ -72,47 +60,32 @@ describe("Input component", () => {
     });
   });
 
-  // MOVE IT!
-  // it("should contain label, text, error message and disabled props", async () => {
-  //   const testValue = "test";
-  //   const [labelValue, textValue, errorMsgValue]: string[] = [
-  //     ...Array(3).keys(),
-  //   ].map((v, i) => testValue + i);
-  //   const disabled = true;
+  it("should contain defined label, text and disabled props", async () => {
+    const testValue = "test";
+    const [labelValue, textValue]: string[] = [...Array(2).keys()].map(
+      (v, i) => testValue + i
+    );
+    const disabled = true;
 
-  //   render(
-  //     <Input
-  //       input=""
-  //       selectedInput=""
-  //       onChangeInput={() => {}}
-  //       label={labelValue}
-  //       text={textValue}
-  //       errorMsg={errorMsgValue}
-  //       disabled={disabled}
-  //     />
-  //   );
-  //   const input = screen.getByRole("textbox");
-  //   await waitFor(() => {
-  //     expect(input).toBeDisabled();
-  //     expect(screen.getByTestId("input-label")).toHaveTextContent(labelValue);
-  //     expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
-  //       textValue
-  //     );
-  //   });
-  //   fireEvent.change(input, { target: { value: testValue } });
-  //   await waitFor(() => {
-  //     expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
-  //       testValue
-  //     );
-  //   });
-  //   fireEvent.change(input, { target: { value: "" } });
-
-  //   await waitFor(() => {
-  //     const error = screen.getByText(errorMsgValue);
-  //     // console.log("ERROR MSG!");
-  //     expect(error).toBeInTheDocument();
-  //   });
-  // });
+    render(
+      <Input
+        input=""
+        selectedInput=""
+        onChangeInput={() => {}}
+        label={labelValue}
+        text={textValue}
+        disabled={disabled}
+      />
+    );
+    const input = screen.getByRole("textbox");
+    await waitFor(() => {
+      expect(input).toBeDisabled();
+      expect(screen.getByTestId("input-label")).toHaveTextContent(labelValue);
+      expect(screen.getByTestId("input-text").getAttribute("placeholder")).toBe(
+        textValue
+      );
+    });
+  });
 
   it("should call the onChangeInput callback when value change", async () => {
     const handleInput = jest.fn();
@@ -128,27 +101,27 @@ describe("Input component", () => {
   });
 
   // MOVE IT
-  // it("should display error message if onChangeInput callback empty next after value change", async () => {
-  //   const handleInput = jest.fn();
-  //   const testValue = "test";
-  //   const errorMsg = "Prázdný vstup";
-  //   render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
-  //   const input = screen.getByRole("textbox");
-  //   fireEvent.change(input, { target: { value: testValue } });
-  //   await waitFor(() => {
-  //     expect(handleInput).toHaveBeenCalled();
-  //     expect(handleInput).toHaveBeenCalledTimes(1);
-  //     expect(handleInput).toHaveBeenCalledWith(testValue);
-  //   });
-  //   fireEvent.change(input, { target: { value: "" } });
-  //   const error = screen.getByText(errorMsg);
-  //   await waitFor(() => {
-  //     expect(handleInput).toHaveBeenCalled();
-  //     expect(handleInput).toHaveBeenCalledTimes(2);
-  //     expect(handleInput).toHaveBeenCalledWith("");
-  //     expect(error).toBeInTheDocument();
-  //   });
-  // });
+  it("should display error message if onChangeInput callback empty next after value change", async () => {
+    const handleInput = jest.fn();
+    const testValue = "test";
+    const errorMsg = "Prázdný vstup";
+    render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: testValue } });
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(1);
+      expect(handleInput).toHaveBeenCalledWith(testValue);
+    });
+    fireEvent.change(input, { target: { value: "" } });
+    const error = screen.getByText(errorMsg);
+    await waitFor(() => {
+      expect(handleInput).toHaveBeenCalled();
+      expect(handleInput).toHaveBeenCalledTimes(2);
+      expect(handleInput).toHaveBeenCalledWith("");
+      expect(error).toBeInTheDocument();
+    });
+  });
 
   // MOVE IT
   // it("should reset input value if reset button triggered", async () => {
