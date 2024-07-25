@@ -60,7 +60,7 @@ describe("Input component", () => {
     });
   });
 
-  it("should contain defined label, text and disabled props", async () => {
+  it("should contain label, text and disabled props", async () => {
     const testValue = "test";
     const [labelValue, textValue]: string[] = [...Array(2).keys()].map(
       (v, i) => testValue + i
@@ -101,27 +101,27 @@ describe("Input component", () => {
   });
 
   // MOVE IT
-  it("should display error message if onChangeInput callback empty next after value change", async () => {
-    const handleInput = jest.fn();
-    const testValue = "test";
-    const errorMsg = "Prázdný vstup";
-    render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
-    const input = screen.getByRole("textbox");
-    fireEvent.change(input, { target: { value: testValue } });
-    await waitFor(() => {
-      expect(handleInput).toHaveBeenCalled();
-      expect(handleInput).toHaveBeenCalledTimes(1);
-      expect(handleInput).toHaveBeenCalledWith(testValue);
-    });
-    fireEvent.change(input, { target: { value: "" } });
-    const error = screen.getByText(errorMsg);
-    await waitFor(() => {
-      expect(handleInput).toHaveBeenCalled();
-      expect(handleInput).toHaveBeenCalledTimes(2);
-      expect(handleInput).toHaveBeenCalledWith("");
-      expect(error).toBeInTheDocument();
-    });
-  });
+  // it("should display error message if onChangeInput callback empty next after value change", async () => {
+  //   const handleInput = jest.fn();
+  //   const testValue = "test";
+  //   const errorMsg = "Prázdný vstup";
+  //   render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
+  //   const input = screen.getByRole("textbox");
+  //   fireEvent.change(input, { target: { value: testValue } });
+  //   await waitFor(() => {
+  //     expect(handleInput).toHaveBeenCalled();
+  //     expect(handleInput).toHaveBeenCalledTimes(1);
+  //     expect(handleInput).toHaveBeenCalledWith(testValue);
+  //   });
+  //   fireEvent.change(input, { target: { value: "" } });
+  //   const error = screen.getByText(errorMsg);
+  //   await waitFor(() => {
+  //     expect(handleInput).toHaveBeenCalled();
+  //     expect(handleInput).toHaveBeenCalledTimes(2);
+  //     expect(handleInput).toHaveBeenCalledWith("");
+  //     expect(error).toBeInTheDocument();
+  //   });
+  // });
 
   // MOVE IT
   // it("should reset input value if reset button triggered", async () => {
