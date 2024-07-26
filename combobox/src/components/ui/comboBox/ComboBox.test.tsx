@@ -201,4 +201,62 @@ describe("ComboBox component", () => {
   //   fireEvent.click(items[1]);
   //   // screen.debug();
   // });
+
+  // Input component tests
+
+  // MOVE IT
+  it("should display error message if onChangeInput callback empty next after value change", async () => {
+    const testValue = "test";
+    const errorMsg = "Prázdný vstup";
+
+    renderWithClient(<ComboBox />);
+    const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: testValue } });
+    let error = screen.queryByText(errorMsg);
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe(testValue);
+      expect(error).not.toBeInTheDocument();
+    });
+    fireEvent.change(input, { target: { value: "" } });
+    error = screen.getByText(errorMsg);
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe("");
+      expect(error).toBeInTheDocument();
+    });
+  });
+
+  // MOVE IT
+  it("should reset input value if reset button triggered", async () => {
+    const testValue = "test";
+
+    renderWithClient(<ComboBox />);
+    const input = screen.getByRole("combobox");
+    fireEvent.change(input, { target: { value: testValue } });
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe(testValue);
+    });
+    const reset = await screen.findByTestId("input-clear");
+    fireEvent.click(reset);
+    await waitFor(() => {
+      expect(input.getAttribute("value")).toBe("");
+    });
+  });
+
+  // it("should reset input value if reset button triggered", async () => {
+  //   const handleInput = jest.fn();
+  //   const testValue = "test";
+  //   render(<Input input="" selectedInput="" onChangeInput={handleInput} />);
+  //   const input = screen.getByRole("textbox");
+  //   const reset = await screen.findByTestId("input-clear");
+  //   fireEvent.change(input, { target: { value: testValue } });
+  //   await waitFor(() => {
+  //     expect(handleInput).toHaveBeenCalled();
+  //     expect(handleInput).toHaveBeenCalledTimes(1);
+  //     expect(handleInput).toHaveBeenCalledWith(testValue);
+  //   });
+  //   fireEvent.click(reset);
+  //   await waitFor(() => {
+  //     expect(input.getAttribute("value")).toBe("");
+  //   });
+  // });
 });
